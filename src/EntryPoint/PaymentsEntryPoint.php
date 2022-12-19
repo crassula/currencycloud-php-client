@@ -48,7 +48,7 @@ class PaymentsEntryPoint extends AbstractEntityEntryPoint
      *
      * @return array
      */
-    protected function convertPaymentToRequest(Payment $payment, $convertForFind = false)
+    public function convertPaymentToRequest(Payment $payment, $convertForFind = false)
     {
         $common = [
             'currency' => $payment->getCurrency(),
@@ -59,7 +59,8 @@ class PaymentsEntryPoint extends AbstractEntityEntryPoint
             'unique_request_id' => $payment->getUniqueRequestId(),
             'charge_type' => $payment->getChargeType(),
             'fee_currency' => $payment->getFeeCurrency(),
-            'fee_amount' => $payment->getFeeAmount()
+            'fee_amount' => $payment->getFeeAmount(),
+            'on_behalf_of' => $payment->getOnBehalfOf(),
         ];
         if ($convertForFind) {
             return $common + [
@@ -107,7 +108,7 @@ class PaymentsEntryPoint extends AbstractEntityEntryPoint
      *
      * @return Payment
      */
-    private function createPaymentFromResponse(stdClass $response)
+    public function createPaymentFromResponse(stdClass $response)
     {
         $payment = new Payment();
         $payment->setShortReference($response->short_reference)
@@ -137,6 +138,9 @@ class PaymentsEntryPoint extends AbstractEntityEntryPoint
             ->setFeeCurrency($response->fee_currency);
 
         $this->setIdProperty($payment, $response->id);
+
+        $payment->setData(json_decode(json_encode($response), true));
+
         return $payment;
     }
 
@@ -444,6 +448,9 @@ class PaymentsEntryPoint extends AbstractEntityEntryPoint
             $paymentEvents[] = $this->createTrackingInfoPaymentEventFromResponse($paymentEvent);
         }
         $trackingInfo->setPaymentEvents($paymentEvents);
+
+        $trackingInfo->setData(json_decode(json_encode($response), true));
+
         return $trackingInfo;
     }
 

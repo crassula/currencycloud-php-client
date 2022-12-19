@@ -4,7 +4,7 @@ namespace CurrencyCloud\Model;
 
 use DateTime;
 
-class Account implements EntityInterface
+class Account extends BaseData implements EntityInterface
 {
 
     /**

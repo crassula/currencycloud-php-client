@@ -3,6 +3,7 @@
 namespace CurrencyCloud\EntryPoint;
 
 use CurrencyCloud\Client;
+use CurrencyCloud\Model\BaseData;
 use CurrencyCloud\Model\EntityInterface;
 use CurrencyCloud\Model\PaginatedData;
 use CurrencyCloud\Model\Pagination;
@@ -141,7 +142,13 @@ abstract class AbstractEntityEntryPoint extends AbstractEntryPoint
             $this->entityManager->add($entity);
             $beneficiaries[] = $entity;
         }
-        return call_user_func($collectionConverter, $beneficiaries, $this->createPaginationFromResponse($response));
+        $collection = call_user_func($collectionConverter, $beneficiaries, $this->createPaginationFromResponse($response));
+
+        if ($collection instanceof BaseData) {
+            $collection->setData(json_decode(json_encode($response), true));
+        }
+
+        return $collection;
     }
 
     /**

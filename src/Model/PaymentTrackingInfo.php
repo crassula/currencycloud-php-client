@@ -5,7 +5,7 @@ namespace CurrencyCloud\Model;
 use CurrencyCloud\Model\PaymentTrackingInfo\PaymentEvent;
 use DateTime;
 
-class PaymentTrackingInfo
+class PaymentTrackingInfo extends BaseData
 {
 
     /**

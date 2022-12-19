@@ -1,5 +1,5 @@
 {
-  "name": "currency-cloud/client",
+  "name": "crassula/currencycloud-php-client",
   "type": "library",
   "authors": [
     {
@@ -14,10 +14,11 @@
   "homepage": "https://github.com/CurrencyCloud/currencycloud-php",
   "license": "MIT",
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.4",
     "guzzlehttp/guzzle": "~6.1",
     "symfony/yaml": "^2.7|^3.0|^4.0",
-    "symfony/event-dispatcher": "^2.7|^3.0|^4.0"
+    "symfony/event-dispatcher": "^2.7|^3.0|^4.0",
+      "ext-json": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.7",

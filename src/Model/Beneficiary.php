@@ -4,7 +4,7 @@ namespace CurrencyCloud\Model;
 
 use DateTime;
 
-class Beneficiary implements EntityInterface
+class Beneficiary extends BaseData implements EntityInterface
 {
 
     /**
@@ -143,6 +143,11 @@ class Beneficiary implements EntityInterface
      * @var DateTime
      */
     private $updatedAt;
+
+    /**
+     * @var string
+     */
+    private $onBehalfOf;
 
     /**
      * Since PHP can not have two distinct constructors, this is easy to implement variant using static method
@@ -808,6 +813,25 @@ class Beneficiary implements EntityInterface
     public function setUpdatedAt(DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOnBehalfOf()
+    {
+        return $this->onBehalfOf;
+    }
+
+    /**
+     * @param string $onBehalfOf
+     *
+     * @return $this
+     */
+    public function setOnBehalfOf($onBehalfOf)
+    {
+        $this->onBehalfOf = (string)$onBehalfOf;
         return $this;
     }
 }

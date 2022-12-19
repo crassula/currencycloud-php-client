@@ -4,7 +4,7 @@ namespace CurrencyCloud\Model;
 
 use DateTime;
 
-class Transaction
+class Transaction extends BaseData
 {
     /**
      * @var string

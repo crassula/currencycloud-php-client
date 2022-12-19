@@ -46,7 +46,7 @@ class ContactsEntryPoint extends AbstractEntityEntryPoint
      *
      * @return array
      */
-    private function convertContactToRequest(Contact $contact, $convertForFind = false)
+    public function convertContactToRequest(Contact $contact, $convertForFind = false)
     {
         $dateOfBirth = $contact->getDateOfBirth();
         $common = [
@@ -96,6 +96,9 @@ class ContactsEntryPoint extends AbstractEntityEntryPoint
             ->setUpdatedAt(new DateTime($response->updated_at));
 
         $this->setIdProperty($contact, $response->id);
+
+        $contact->setData(json_decode(json_encode($response), true));
+
         return $contact;
     }
 

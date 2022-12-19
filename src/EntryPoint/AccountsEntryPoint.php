@@ -94,7 +94,7 @@ class AccountsEntryPoint extends AbstractEntityEntryPoint
      *
      * @return array
      */
-    public function convertAccountToRequest(Account $account, $convertForSearch = false)
+    public function convertAccountToRequest(Account $account, $convertForSearch = false) 
     {
         $common = [
             'legal_entity_type' => $account->getLegalEntityType(),
@@ -146,6 +146,9 @@ class AccountsEntryPoint extends AbstractEntityEntryPoint
                 ->setShortReference($response->short_reference);
 
         $this->setIdProperty($account, $response->id);
+
+        $account->setData(json_decode(json_encode($response), true));
+
         return $account;
     }
 

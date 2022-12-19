@@ -3,7 +3,7 @@ namespace CurrencyCloud\Model;
 
 use DateTime;
 
-class Transfer implements EntityInterface {
+class Transfer extends BaseData implements EntityInterface {
 
     /**
      * @var string

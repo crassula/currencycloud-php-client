@@ -28,8 +28,8 @@ class TransfersEntryPoint extends AbstractEntityEntryPoint {
      * @param stdClass $response
      * @return Transfer
      */
-    protected function createTransferFromResponse($response){
-        return new Transfer(
+    public function createTransferFromResponse($response){
+        $transfer = new Transfer(
             $response->id,
             $response->short_reference,
             $response->source_account_id,
@@ -44,6 +44,10 @@ class TransfersEntryPoint extends AbstractEntityEntryPoint {
             $response->creator_account_id,
             $response->creator_contact_id
         );
+
+        $transfer->setData(json_decode(json_encode($response), true));
+
+        return $transfer;
     }
 
     /**
@@ -95,28 +99,6 @@ class TransfersEntryPoint extends AbstractEntityEntryPoint {
             "creator_account_id" => $criteria->getCreatorAccountId(),
             "creator_contact_id" => $criteria->getCreatorContactId()
         ];
-    }
-
-    /**
-     * @param stdClass $response
-     * @return Transfer
-     */
-    public function convertTransferFromResponse($response){
-        return new  Transfer(
-            $response->id,
-            $response->short_reference,
-            $response->source_account_id,
-            $response->destination_account_id,
-            $response->currency,
-            $response->amount,
-            $response->status,
-            $response->reason,
-            $response->created_at,
-            $response->updated_at,
-            $response->completed_at,
-            $response->creator_account_id,
-            $response->creator_contact_id
-        );
     }
 
     /**

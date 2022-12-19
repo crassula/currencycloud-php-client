@@ -5,7 +5,7 @@ namespace CurrencyCloud\Model;
 use Countable;
 use IteratorAggregate;
 
-abstract class PaginatedData implements Countable, IteratorAggregate
+abstract class PaginatedData extends BaseData implements Countable, IteratorAggregate
 {
 
     /**

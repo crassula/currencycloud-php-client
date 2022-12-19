@@ -4,7 +4,7 @@ namespace CurrencyCloud\Model;
 
 use DateTime;
 
-class Payment implements EntityInterface
+class Payment extends BaseData implements EntityInterface
 {
 
     /**
@@ -111,6 +111,10 @@ class Payment implements EntityInterface
      * @var string|null
      */
     private $feeCurrency;
+    /**
+     * @var string|null
+     */
+    private $onBehalfOf;
 
     /**
      * @param string $currency
@@ -614,5 +618,22 @@ class Payment implements EntityInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getOnBehalfOf()
+    {
+        return $this->onBehalfOf;
+    }
 
+    /**
+     * @param string|null $onBehalfOf
+     *
+     * @return $this
+     */
+    public function setOnBehalfOf($onBehalfOf)
+    {
+        $this->onBehalfOf = $onBehalfOf;
+        return $this;
+    }
 }

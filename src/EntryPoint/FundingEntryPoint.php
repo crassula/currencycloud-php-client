@@ -44,10 +44,14 @@ class FundingEntryPoint extends AbstractEntryPoint
      * @return FundingAccounts
      */
     protected function createFundingAccountsFromResponse($response){
-        return new FundingAccounts(
+        $fundingAccounts = new FundingAccounts(
             $this->createFundingAccountArrayFromResponse($response),
             $this->createPaginationFromResponse($response)
         );
+
+        $fundingAccounts->setData(json_decode(json_encode($response), true));
+
+        return $fundingAccounts;
     }
 
     /**

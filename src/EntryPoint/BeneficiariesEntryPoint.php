@@ -127,7 +127,7 @@ class BeneficiariesEntryPoint extends AbstractEntityEntryPoint
      *
      * @return array
      */
-    protected function convertBeneficiaryToRequest(Beneficiary $beneficiary, $convertForValidate = false, $convertForUpdate = false)
+    public function convertBeneficiaryToRequest(Beneficiary $beneficiary, $convertForValidate = false, $convertForUpdate = false)
 	{
         $isDefaultBeneficiary = $beneficiary->isDefaultBeneficiary();
         $common = [
@@ -159,7 +159,8 @@ class BeneficiariesEntryPoint extends AbstractEntityEntryPoint
                     ->format('Y-m-d'),
             'beneficiary_identification_type' => $beneficiary->getBeneficiaryIdentificationType(),
             'beneficiary_identification_value' => $beneficiary->getBeneficiaryIdentificationValue(),
-            'payment_types' => $beneficiary->getPaymentTypes()
+            'payment_types' => $beneficiary->getPaymentTypes(),
+            'on_behalf_of' => $beneficiary->getOnBehalfOf()
         ];
 
         if ($convertForValidate) {
@@ -232,6 +233,8 @@ class BeneficiariesEntryPoint extends AbstractEntityEntryPoint
                 ->setBeneficiaryExternalReference($response->beneficiary_external_reference);
             $this->setIdProperty($beneficiary, $response->id);
         }
+
+        $beneficiary->setData(json_decode(json_encode($response), true));
 
         return $beneficiary;
     }

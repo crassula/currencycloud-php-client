@@ -122,9 +122,10 @@ class TransactionsEntryPoint extends AbstractEntryPoint
      *
      * @return Transaction
      */
-    protected function createTransactionFromResponse(stdClass $response)
+    public function createTransactionFromResponse(stdClass $response)
     {
-        $transaction = (new Transaction())->setBalanceId($response->balance_id)
+        $transaction = (new Transaction())
+            ->setBalanceId($response->balance_id)
             ->setAccountId($response->account_id)
             ->setCurrency($response->currency)
             ->setAmount($response->amount)
@@ -142,6 +143,8 @@ class TransactionsEntryPoint extends AbstractEntryPoint
             ->setUpdatedAt((null === $response->updated_at) ? null : new DateTime($response->updated_at));
 
         $this->setIdProperty($transaction, $response->id);
+
+        $transaction->setData(json_decode(json_encode($response), true));
 
         return $transaction;
     }
@@ -168,7 +171,7 @@ class TransactionsEntryPoint extends AbstractEntryPoint
      * @return TransactionSender
      */
     protected function createTransactionSenderFromResponse($response){
-        return new TransactionSender(
+        $transactionSender = new TransactionSender(
             $response->id,
             $response->amount,
             $response->currency,
@@ -180,5 +183,9 @@ class TransactionsEntryPoint extends AbstractEntryPoint
             !empty($response->created_at) ? new DateTime($response->created_at) : null,
             !empty($response->updated_at) ? new DateTime($response->updated_at) : null
         );
+
+        $transactionSender->setData(json_decode(json_encode($response), true));
+
+        return $transactionSender;
     }
 }
