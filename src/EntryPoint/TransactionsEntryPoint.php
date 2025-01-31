@@ -11,7 +11,7 @@ use stdClass;
 
 class TransactionsEntryPoint extends AbstractEntryPoint
 {
-    const DATE_FORMAT = 'Y-m-d';
+    const DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * @param string $id
