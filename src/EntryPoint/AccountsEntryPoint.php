@@ -20,7 +20,7 @@ class AccountsEntryPoint extends AbstractEntityEntryPoint
     public function create(Account $account)
     {
         return $this->doCreate('accounts/create', $account, function ($account) {
-            return $this->convertAccountToRequest($account);
+            return $this->convertAccountToRequest($account) + $this->convertComplianceToRequest($account);
         }, function (stdClass $response) {
             return $this->createAccountFromResponse($response);
         });
@@ -128,6 +128,39 @@ class AccountsEntryPoint extends AbstractEntityEntryPoint
                 ($isOnlineTrading ? 'true' : 'false'),
             'phone_trading' => (null === $isPhoneTrading) ? null :
                 ($isPhoneTrading ? 'true' : 'false')
+        ];
+    }
+
+    /**
+     * Compliance fields are accepted on account creation only.
+     *
+     * @param Account $account
+     *
+     * @return array
+     */
+    public function convertComplianceToRequest(Account $account)
+    {
+        return [
+            'identification_expiration' => $account->getIdentificationExpiration(),
+            'identification_issuer' => $account->getIdentificationIssuer(),
+            'country_of_citizenship' => $account->getCountryOfCitizenship(),
+            'national_identification' => $account->getNationalIdentification(),
+            'country_of_incorporation' => $account->getCountryOfIncorporation(),
+            'date_of_incorporation' => $account->getDateOfIncorporation(),
+            'industry_type' => $account->getIndustryType(),
+            'legal_entity_sub_type' => $account->getLegalEntitySubType(),
+            'business_website_url' => $account->getBusinessWebsiteUrl(),
+            'trading_address_street' => $account->getTradingAddressStreet(),
+            'trading_address_city' => $account->getTradingAddressCity(),
+            'trading_address_state' => $account->getTradingAddressState(),
+            'trading_address_postalcode' => $account->getTradingAddressPostalcode(),
+            'trading_address_country' => $account->getTradingAddressCountry(),
+            'tax_identification' => $account->getTaxIdentification(),
+            'customer_risk' => $account->getCustomerRisk(),
+            'expected_monthly_activity_value' => $account->getExpectedMonthlyActivityValue(),
+            'expected_monthly_activity_volume' => $account->getExpectedMonthlyActivityVolume(),
+            'expected_transaction_countries' => $account->getExpectedTransactionCountries(),
+            'expected_transaction_currencies' => $account->getExpectedTransactionCurrencies(),
         ];
     }
 

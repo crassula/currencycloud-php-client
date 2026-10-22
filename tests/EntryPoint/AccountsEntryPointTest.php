@@ -57,6 +57,29 @@ class AccountsEntryPointTest extends BaseCurrencyCloudTestCase
         'phone_trading' => null
     ];
 
+    protected $complianceIn = [
+        'identification_expiration' => null,
+        'identification_issuer' => null,
+        'country_of_citizenship' => null,
+        'national_identification' => null,
+        'country_of_incorporation' => null,
+        'date_of_incorporation' => null,
+        'industry_type' => null,
+        'legal_entity_sub_type' => null,
+        'business_website_url' => null,
+        'trading_address_street' => null,
+        'trading_address_city' => null,
+        'trading_address_state' => null,
+        'trading_address_postalcode' => null,
+        'trading_address_country' => null,
+        'tax_identification' => null,
+        'customer_risk' => null,
+        'expected_monthly_activity_value' => null,
+        'expected_monthly_activity_volume' => null,
+        'expected_transaction_countries' => null,
+        'expected_transaction_currencies' => null,
+    ];
+
     /**
      * @test
      */
@@ -69,7 +92,7 @@ class AccountsEntryPointTest extends BaseCurrencyCloudTestCase
             'POST',
             'accounts/create',
             [],
-            $this->in
+            $this->in + $this->complianceIn
         )
         );
 
@@ -110,7 +133,7 @@ class AccountsEntryPointTest extends BaseCurrencyCloudTestCase
             'POST',
             'accounts/create',
             [],
-            $in
+            $in + $this->complianceIn
         )
         );
 
@@ -226,6 +249,67 @@ class AccountsEntryPointTest extends BaseCurrencyCloudTestCase
         $account = $entryPoint->current();
 
         $this->validateObjectStrictName($account, $this->out);
+    }
+
+    /**
+     * @test
+     */
+    public function complianceFieldsAreSentOnCreate()
+    {
+        $entryPoint = new AccountsEntryPoint(
+            new SimpleEntityManager(), $this->getMockedClient(
+            json_decode(json_encode($this->out)),
+            'POST',
+            'accounts/create',
+            [],
+            [
+                'identification_expiration' => 'V0',
+                'identification_issuer' => 'V1',
+                'country_of_citizenship' => 'V2',
+                'national_identification' => 'V3',
+                'country_of_incorporation' => 'V4',
+                'date_of_incorporation' => 'V5',
+                'industry_type' => 'V6',
+                'legal_entity_sub_type' => 'V7',
+                'business_website_url' => 'V8',
+                'trading_address_street' => 'V9',
+                'trading_address_city' => 'V10',
+                'trading_address_state' => 'V11',
+                'trading_address_postalcode' => 'V12',
+                'trading_address_country' => 'V13',
+                'tax_identification' => 'V14',
+                'customer_risk' => 'V15',
+                'expected_monthly_activity_value' => 'V16',
+                'expected_monthly_activity_volume' => 'V17',
+                'expected_transaction_countries' => ['GB', 'FR'],
+                'expected_transaction_currencies' => ['EUR'],
+            ] + $this->in
+        )
+        );
+
+        $account = Account::create('B', 'A')
+            ->setIdentificationExpiration('V0')
+            ->setIdentificationIssuer('V1')
+            ->setCountryOfCitizenship('V2')
+            ->setNationalIdentification('V3')
+            ->setCountryOfIncorporation('V4')
+            ->setDateOfIncorporation('V5')
+            ->setIndustryType('V6')
+            ->setLegalEntitySubType('V7')
+            ->setBusinessWebsiteUrl('V8')
+            ->setTradingAddressStreet('V9')
+            ->setTradingAddressCity('V10')
+            ->setTradingAddressState('V11')
+            ->setTradingAddressPostalcode('V12')
+            ->setTradingAddressCountry('V13')
+            ->setTaxIdentification('V14')
+            ->setCustomerRisk('V15')
+            ->setExpectedMonthlyActivityValue('V16')
+            ->setExpectedMonthlyActivityVolume('V17')
+            ->setExpectedTransactionCountries(['GB', 'FR'])
+            ->setExpectedTransactionCurrencies(['EUR']);
+
+        $entryPoint->create($account);
     }
 
     /**
@@ -398,7 +482,7 @@ class AccountsEntryPointTest extends BaseCurrencyCloudTestCase
             'POST',
             'accounts/create',
             [],
-            $in
+            $in + $this->complianceIn
         )
         );
 
